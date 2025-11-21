@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NutriGen AI - 智能食谱生成器</title>
+    
+    <!-- Fonts: Noto Serif SC for that "Official Document" look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['"Noto Sans SC"', 'sans-serif'],
+              serif: ['"Noto Serif SC"', 'serif'],
+            },
+            colors: {
+              primary: '#10b981', // Emerald 500
+              secondary: '#059669', // Emerald 600
+              accent: '#f97316', // Orange 500 (Changed to match reference image style)
+              paper: '#fffbf0', // Warm paper background
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      /* Print Styles - Critical for PDF Generation */
+      @media print {
+        @page {
+          size: A4 portrait;
+          margin: 10mm; /* A4 standard margins */
+        }
+        
+        html {
+          font-size: 11pt; /* Optimized for reading on paper */
+        }
+
+        body {
+          background: white !important;
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+          color: #000 !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+
+        #root {
+          width: 100%;
+          display: block;
+        }
+
+        /* Hide generic non-print elements */
+        .no-print {
+          display: none !important;
+        }
+
+        .page-break {
+          break-before: page;
+          display: block;
+          margin-top: 2rem;
+        }
+        
+        /* Ensure elements don't break awkwardly */
+        .break-inside-avoid {
+          break-inside: avoid !important;
+          page-break-inside: avoid !important;
+        }
+
+        /* Grid Layout for Print - Mimic the reference poster */
+        .print-grid {
+          display: grid !important;
+          grid-template-columns: repeat(2, 1fr) !important; /* 2 columns per page for readability */
+          gap: 1rem !important;
+        }
+        
+        /* Remove shadows and use borders for crisp print */
+        .shadow-sm, .shadow-md, .shadow-lg, .shadow-xl {
+          box-shadow: none !important;
+        }
+
+        /* Clean up daily cards for print */
+        .print-grid > div {
+           border: 1px solid #cbd5e1 !important; /* Slate 300 */
+           height: auto !important;
+        }
+        
+        /* Hide scrollbars in print */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* --- SPECIAL MODE: Print ONLY Grocery List --- */
+        body.print-grocery-only * {
+            visibility: hidden;
+            height: 0;
+            overflow: hidden;
+        }
+        
+        body.print-grocery-only .grocery-print-container,
+        body.print-grocery-only .grocery-print-container * {
+            visibility: visible;
+            height: auto;
+            overflow: visible;
+        }
+
+        body.print-grocery-only .grocery-print-container {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body.print-grocery-only .grocery-print-container .grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+      }
+      
+      .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+      }
+      .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+      }
+      
+      /* Custom animation for loading */
+      @keyframes fade-in {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .animate-fade-in {
+        animation: fade-in 0.5s ease-out forwards;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+  }
+}
+</script>
+</head>
+  <body class="bg-orange-50/30 text-slate-900 antialiased font-sans">
+    <div id="root"></div>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "name": "NutriGen AI - 智能食谱",
+  "description": "基于AI的个性化减肥食谱生成器，支持食材清单导出与拍照热量识别。",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
